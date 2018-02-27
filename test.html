@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src='./native.history.js'></script>
+  <title>test</title>
+</head>
+<body>
+  TEST PAGE
+  <script>
+    (function (window, undefined) {
+      var _source = location.search;
+      var goUrl = "https://kenjieqian.yirendai.com/html/market/index.html" + _source;
+
+      // Bind to StateChange Event
+      History.Adapter.bind(window, 'statechange', function () { // Note: We are using statechange instead of popstate
+        var State = History.getState(); // Note: We are using History.getState() instead of event.state
+        // location.href = goUrl;
+        if (!State.data.state) location.href = goUrl;
+      });
+
+      //向浏览历史加入一条历史记录
+      //将一个{state:1}对象压入该链接中,供下面的历史事件触发时调用，
+      History.pushState({ state: 1 }, "", "?state=1");
+    })(window);
+  </script>
+</body>
+</html>
