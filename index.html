@@ -4,22 +4,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <style>
+    .success {
+      color: green;
+    }
+    .fail {
+      color: red;
+    }
+  </style>
   <title>Index</title>
 </head>
 <body>
+  <p id="status">HTML5 History API not supported</p>
   index
   <script>
-    // var goUrl = "file:///Users/wangkailang/Desktop/test_popstate/history.html";
-    // https://wangkailang.github.io/popstate_test/
-    var goUrl = "https://wangkailang.github.io/popstate_test/history.html";
+    var _source = location.search;
+    var goUrl = "https://kenjieqian.yirendai.com/html/market/index.html" + _source;
 
+    var $ = function (s) { return document.getElementById(s); };
+    var state = $('status');
+
+    if (typeof history.pushState === 'undefined') {
+      state.className = 'fail';
+    } else {
+      state.className = 'success';
+      state.innerHTML = 'HTML5 History API available';
+    }
+    
+    // 上一页事件
     window.addEventListener('popstate', function (event) {
       location.href = goUrl;
       console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
     });
 
     window.addEventListener('hashchange', function (event) {
-      console.log('-----');
+      alert('-----');
       // we won't do this for now - let's stay focused on states
       /*
       if (event.newURL) {
@@ -31,7 +50,13 @@
     });
 
     window.addEventListener('pageshow', function (event) {
-      history.pushState({ page: 1 }, '');
+      // 如果检测到页面是从“往返缓存”中读取的，刷新页面
+      if (event.persisted) location.reload();
+      // 向浏览器中添加一个状态
+      // history.pushState(state, title, url);
+      // state 存储JSON字符串，可以用在popstate事件中
+      // url 任意有效URL，不会重新加载页面，作为新历史记录的标记
+      history.pushState({ page: 1 }, null, '#p1');
     });
 
     // window.addEventListener('pagehide', function (event) {
