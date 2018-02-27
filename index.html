@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Index</title>
+</head>
+<body>
+  index
+  <script>
+    var goUrl = "file:///Users/wangkailang/Desktop/test_popstate/history.html";
+
+    window.addEventListener('popstate', function (event) {
+      location.href = goUrl;
+      console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
+    });
+
+    window.addEventListener('hashchange', function (event) {
+      console.log('-----');
+      // we won't do this for now - let's stay focused on states
+      /*
+      if (event.newURL) {
+        urlhistory.innerHTML = event.oldURL;
+      } else {
+        urlhistory.innerHTML = "no support for <code>event.newURL/oldURL</code>";
+      }
+      */
+    });
+
+    window.addEventListener('pageshow', function (event) {
+      history.pushState({ page: 1 }, '');
+    });
+
+    // window.addEventListener('pagehide', function (event) {
+    //   reportEvent(event);
+    // });
+  </script>
+</body>
+</html>
