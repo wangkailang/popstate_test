@@ -15,10 +15,11 @@
       const timer = now.getTime();
       var cacheTime = localStorage.getItem('time');
       if (!cacheTime) {
-        localStorage.setItem('time', timer + 10*1000);
+        localStorage.setItem('time', timer + 20*1000);
       } else if (timer < cacheTime) {
-        localStorage.removeItem('time');
         return;
+      } else {
+        localStorage.removeItem('time');
       }
 
 
