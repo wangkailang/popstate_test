@@ -11,6 +11,12 @@
   TEST PAGE
   <script>
     (function (window, undefined) {
+      var isVisited = localStorage.getItem('visited');
+      if (isVisited) {
+        return;
+      } else {
+        localStorage.setItem('visited', 'true');
+      }
       var _source = location.search;
       var goUrl = "https://kenjieqian.yirendai.com/html/market/index.html" + _source;
 
