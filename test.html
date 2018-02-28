@@ -13,6 +13,7 @@
     (function (window, undefined) {
       var isVisited = localStorage.getItem('visited');
       if (isVisited) {
+        localStorage.removeItem('visited');
         return;
       } else {
         localStorage.setItem('visited', 'true');
