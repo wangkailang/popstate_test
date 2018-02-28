@@ -11,6 +11,16 @@
   TEST PAGE
   <script>
     (function (window, undefined) {
+      var now = new Date();
+      const timer = now.getTime();
+      var cacheTime = localStorage.getItem('time');
+      if (!cacheTime) {
+        localStorage.setItem('time', timer + 10*1000);
+      } else if (timer > cacheTime) {
+        return;
+      }
+
+
       var isVisited = localStorage.getItem('visited');
       if (isVisited) {
         localStorage.removeItem('visited');
@@ -21,10 +31,11 @@
       var _source = location.search;
       var goUrl = "https://kenjieqian.yirendai.com/html/market/index.html" + _source;
 
+
+
       // Bind to StateChange Event
       History.Adapter.bind(window, 'statechange', function () { // Note: We are using statechange instead of popstate
         var State = History.getState(); // Note: We are using History.getState() instead of event.state
-        // location.href = goUrl;
         if (!State.data.state) location.href = goUrl;
       });
 
