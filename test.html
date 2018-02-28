@@ -16,7 +16,8 @@
       var cacheTime = localStorage.getItem('time');
       if (!cacheTime) {
         localStorage.setItem('time', timer + 10*1000);
-      } else if (timer > cacheTime) {
+      } else if (timer < cacheTime) {
+        localStorage.removeItem('time');
         return;
       }
 
