@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>AWS SDK for JavaScript - Sample Application</title>
+  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.202.0.js"></script>
+</head>
+
+<body>
+  <textarea id="data"></textarea>
+  <button id="upload-button">Upload to S3</button>
+  <div id="results"></div>
+  <script type="text/javascript">
+    // See the Configuring section to configure credentials in the SDK
+    AWS.config.credentials = new AWS.Credentials('46H0BVC1857DXR330T2H', 'V9zOGlzpoCRBQiMfMAhHfxDlPck2LDx9ejYbs9Dw', null);;
+    // Configure your region
+    AWS.config.region = 'cn-north-1';
+
+    var bucket = new AWS.S3({
+      apiVersion: '2006-03-01',
+      params: { Bucket: 'bbb' },
+      endpoint: '10.255.101.62:7480',
+      s3ForcePathStyle: false,
+    });
+
+    var textarea = document.getElementById('data');
+    var button = document.getElementById('upload-button');
+    var results = document.getElementById('results');
+    button.addEventListener('click', function () {
+      results.innerHTML = '';
+
+      var params = {
+        Key: 'data.txt',
+        Body: textarea.value
+        };
+      bucket.upload(params, function (err, data) {
+        results.innerHTML = err ? 'ERROR!' : 'SAVED.';
+        console.log(err, data)
+        alert(err)
+      });
+    }, false);
+  </script>
+</body>
+
+</html>

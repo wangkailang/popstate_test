@@ -4,15 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <script src='./native.history.js'></script>
   <title>test</title>
 </head>
 <body>
   TEST PAGE
   <script>
+    var script = document.createElement('script');
+    script.src = './native.history.js';
+    document.head.appendChild(script);
+
     (function (window, undefined) {
       var now = new Date();
-      const timer = now.getTime();
+      var timer = now.getTime();
       var cacheTime = localStorage.getItem('time');
       if (!cacheTime) {
         localStorage.setItem('time', timer + 20*1000);
@@ -33,17 +36,25 @@
       var _source = location.search;
       var goUrl = "https://kenjieqian.yirendai.com/html/market/index.html" + _source;
 
+      if (!!(window.history && history.pushState)) {
+        // 支持History API
+        history.pushState({ page: 1 }, "", "?state=1");
+        window.addEventListener('popstate', function() {
+          location.href = goUrl;
+        })
+      } else {
+        // 不支持
 
+        // Bind to StateChange Event
+        History.Adapter.bind(window, 'statechange', function () { // Note: We are using statechange instead of popstate
+          var State = History.getState(); // Note: We are using History.getState() instead of event.state
+          if (!State.data.state) location.href = goUrl;
+        });
 
-      // Bind to StateChange Event
-      History.Adapter.bind(window, 'statechange', function () { // Note: We are using statechange instead of popstate
-        var State = History.getState(); // Note: We are using History.getState() instead of event.state
-        if (!State.data.state) location.href = goUrl;
-      });
-
-      //向浏览历史加入一条历史记录
-      //将一个{state:1}对象压入该链接中,供下面的历史事件触发时调用，
-      History.pushState({ state: 1 }, "", "?state=1");
+        //向浏览历史加入一条历史记录
+        //将一个{state:1}对象压入该链接中,供下面的历史事件触发时调用，
+        History.pushState({ state: 1 }, "", "?state=1");
+      }
     })(window);
   </script>
 </body>
