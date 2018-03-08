@@ -9,6 +9,21 @@
 <body>
   TEST PAGE
   <script>
+    function searchToObject() {
+      var pairs = window.location.search.substring(1).split("&"),
+        obj = {},
+        pair,
+        i;
+
+      for ( i in pairs ) {
+        if ( pairs[i] === "" ) continue;
+
+        pair = pairs[i].split("=");
+        obj[ decodeURIComponent( pair[0] ) ] = decodeURIComponent( pair[1] );
+      }
+
+      return obj;
+    }
     var script = document.createElement('script');
     script.src = './native.history.js';
     document.head.appendChild(script);
@@ -33,15 +48,16 @@
       } else {
         localStorage.setItem('visited', 'true');
       }
+
       var _source = location.search;
       var goUrl = "https://kenjieqian.yirendai.com/html/market/index.html" + _source;
 
       if (!!(window.history && history.pushState)) {
         // 支持History API
-        history.pushState({ page: 1 }, "", "?state=1");
+        history.pushState({ page: 1 }, "", '#state1');
         window.addEventListener('popstate', function() {
           location.href = goUrl;
-        })
+        });
       } else {
         // 不支持
 
@@ -53,7 +69,13 @@
 
         //向浏览历史加入一条历史记录
         //将一个{state:1}对象压入该链接中,供下面的历史事件触发时调用，
-        History.pushState({ state: 1 }, "", "?state=1");
+        var queryJson = searchToObject();
+        queryJson.state = 1;
+        var queryStr = '?';
+        Object.keys(queryJson).forEach(function (key) {
+          queryStr += key + '=' + queryJson[key];
+        })
+        History.replaceState({ state: 1 }, "", "?state=1");
       }
     })(window);
   </script>
