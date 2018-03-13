@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="./native.history.js"></script>
   <title>test</title>
 </head>
 <body>
@@ -24,9 +25,6 @@
 
       return obj;
     }
-    var script = document.createElement('script');
-    script.src = './native.history.js';
-    document.head.appendChild(script);
 
     (function (window, undefined) {
       var now = new Date();
